@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd">
+    <flow name="scattergatherandencryptFlow">
+        <file:inbound-endpoint path="C:\Users\Chakradhar\Desktop\MulePractice\Source" responseTimeout="10000" doc:name="File"/>
+        <base64-encoder-transformer name="base-64" encoding="utf-8"></base64-encoder-transformer>
+        <logger message="File picked" level="INFO" doc:name="Logger"/>
+        <scatter-gather doc:name="Scatter-Gather">
+            <file:outbound-endpoint responseTimeout="10000" doc:name="File" path="C:\Users\Chakradhar\Desktop\MulePractice\Encodedcopy"/>
+            <file:outbound-endpoint responseTimeout="10000" doc:name="File" path="C:\Users\Chakradhar\Desktop\MulePractice\Encoded"/>
+        </scatter-gather>
+    </flow>
+    <flow name="Decryptflow">
+        <file:inbound-endpoint responseTimeout="10000" doc:name="File" path="C:\Users\Chakradhar\Desktop\MulePractice\Encoded"/>
+        <base64-decoder-transformer name="decoder"></base64-decoder-transformer>
+        <file:outbound-endpoint path="C:\Users\Chakradhar\Desktop\MulePractice\Decoded" responseTimeout="10000" doc:name="File"/>
+    </flow>
+</mule>
